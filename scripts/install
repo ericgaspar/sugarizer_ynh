@@ -16,13 +16,12 @@ ynh_hide_warnings ynh_install_mongo
 #=================================================
 ynh_script_progression "Creating a MongoDB database..."
 
-mkdir -p /data/db
+mkdir -p $install_dir/db
 
 db_name=$(ynh_sanitize_dbid --db_name=$app)
 db_user=$db_name
 ynh_app_setting_set --key=db_name --value=$db_name
 ynh_mongo_setup_db --db_user=$db_user --db_name=$db_name
-
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -37,7 +36,7 @@ ynh_setup_source --dest_dir="$install_dir/sugarizer-server" --source_id="sugariz
 #=================================================
 ynh_script_progression "Adding $app's configuration files..."
 
-ynh_config_add --template="settings.example.json" --destination="$install_dir/settings.json"
+ynh_config_add --template="sugarizer.ini" --destination="$install_dir/sugarizer.json"
 
 #=================================================
 # SYSTEM CONFIGURATION
@@ -48,7 +47,7 @@ ynh_config_add_nginx
 
 ynh_config_add_systemd
 
-yunohost service add "$app" --description="Documentation tool for creativity" --log="/var/log/$app/$app.log"
+yunohost service add "$app" --description="" --log="/var/log/$app/$app.log"
 
 #=================================================
 # INSTALL DODOC
@@ -57,27 +56,15 @@ ynh_script_progression "Installing the app..."
 
 pushd "$install_dir/sugarizer-server"
  	ynh_hide_warnings ynh_exec_as_app npm install --no-optional
- 	grunt -v --force
- 	cp -r build/* .
+ 	#cp -r build/* .
 popd
-
-
-
-WORKDIR /opt/sugarizer
-RUN npm install --only=dev
-RUN grunt -v --force
-WORKDIR /opt/sugarizer-server
-RUN npm install --no-optional
-RUN grunt -v --force
-RUN cp -r build/* .
-
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression "Starting $app's systemd service..."
 
-ynh_systemctl --service="$app" --action="start" --log_path="systemd" --wait_until="Server up and running"
+ynh_systemctl --service="$app" --action="start" --log_path="systemd"
 
 #=================================================
 # END OF SCRIPT
