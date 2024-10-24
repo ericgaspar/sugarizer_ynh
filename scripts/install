@@ -9,19 +9,19 @@ source /usr/share/yunohost/helpers
 ynh_script_progression "Installing dependencies..."
 
 ynh_nodejs_install
-ynh_hide_warnings ynh_install_mongo
+#ynh_hide_warnings ynh_install_mongo
 
 #=================================================
 # CREATE A MONGODB DATABASE
 #=================================================
-ynh_script_progression "Creating a MongoDB database..."
+#ynh_script_progression "Creating a MongoDB database..."
 
-mkdir -p $install_dir/db
+#mkdir -p $install_dir/db
 
-db_name=$(ynh_sanitize_dbid --db_name=$app)
-db_user=$db_name
-ynh_app_setting_set --key=db_name --value=$db_name
-ynh_mongo_setup_db --db_user=$db_user --db_name=$db_name
+#db_name=$(ynh_sanitize_dbid --db_name=$app)
+#db_user=$db_name
+#ynh_app_setting_set --key=db_name --value=$db_name
+#ynh_mongo_setup_db --db_user=$db_user --db_name=$db_name
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
