@@ -12,11 +12,10 @@ version = "1.0~ynh1"
 maintainers = ["johndoe"]
 
 [upstream]
-# NB: Only the "license" key is mandatory. Remove entries for which there's no relevant data
-license = "free" # you can see the available licenses identifiers list here: https://spdx.org/licenses/
+license = "Apache-2.0"
 website = "https://example.com"
 demo = "https://demo.example.com"
-admindoc = "https://yunohost.org/packaging_apps"
+admindoc = "https://github.com/llaske/sugarizer-server/blob/master/docs/install.md"
 userdoc = "https://yunohost.org/apps"
 code = "https://github.com/llaske/sugarizer-server"
 

@@ -15,7 +15,8 @@ ynh_nodejs_install
 #=================================================
 ynh_script_progression "Setting up source files..."
 
-ynh_setup_source --dest_dir="$install_dir"
+ynh_setup_source --dest_dir="$install_dir" --source_id="sugarizer"
+ynh_setup_source --dest_dir="$install_dir" --source_id="sugarizer-server"
 
 #=================================================
 # APP INITIAL CONFIGURATION
@@ -41,7 +42,9 @@ yunohost service add "$app" --description="Documentation tool for creativity" --
 ynh_script_progression "Installing the app..."
 
 pushd "$install_dir"
- 	ynh_hide_warnings ynh_exec_as_app npm install
+ 	ynh_hide_warnings ynh_exec_as_app npm install --no-optional
+ 	grunt -v --force
+ 	cp -r build/* .
 popd
 
 
