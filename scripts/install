@@ -55,7 +55,7 @@ yunohost service add "$app" --description="" --log="/var/log/$app/$app.log"
 ynh_script_progression "Installing the app..."
 
 pushd "$install_dir/sugarizer-server"
- 	ynh_hide_warnings ynh_exec_as_app npm install --no-optional
+ 	ynh_hide_warnings npm install --no-optional
  	#cp -r build/* .
 popd
 
