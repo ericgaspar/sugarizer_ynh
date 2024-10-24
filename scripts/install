@@ -36,7 +36,7 @@ ynh_setup_source --dest_dir="$install_dir/sugarizer-server" --source_id="sugariz
 #=================================================
 ynh_script_progression "Adding $app's configuration files..."
 
-ynh_config_add --template="sugarizer.ini" --destination="$install_dir/sugarizer.json"
+ynh_config_add --template="sugarizer.ini" --destination="$install_dir/sugarizer-server/env/production.json"
 
 #=================================================
 # SYSTEM CONFIGURATION
@@ -53,6 +53,11 @@ yunohost service add "$app" --description="" --log="/var/log/$app/$app.log"
 # INSTALL DODOC
 #=================================================
 ynh_script_progression "Installing the app..."
+
+pushd "$install_dir/sugarizer"
+ 	ynh_hide_warnings npm install
+ 	#cp -r build/* .
+popd
 
 pushd "$install_dir/sugarizer-server"
  	ynh_hide_warnings npm install --no-optional
