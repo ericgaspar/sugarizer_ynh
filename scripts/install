@@ -9,14 +9,28 @@ source /usr/share/yunohost/helpers
 ynh_script_progression "Installing dependencies..."
 
 ynh_nodejs_install
+ynh_hide_warnings ynh_install_mongo
+
+#=================================================
+# CREATE A MONGODB DATABASE
+#=================================================
+ynh_script_progression "Creating a MongoDB database..."
+
+mkdir -p /data/db
+
+db_name=$(ynh_sanitize_dbid --db_name=$app)
+db_user=$db_name
+ynh_app_setting_set --key=db_name --value=$db_name
+ynh_mongo_setup_db --db_user=$db_user --db_name=$db_name
+
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 ynh_script_progression "Setting up source files..."
 
-ynh_setup_source --dest_dir="$install_dir" --source_id="sugarizer"
-ynh_setup_source --dest_dir="$install_dir" --source_id="sugarizer-server"
+ynh_setup_source --dest_dir="$install_dir/sugarizer" --source_id="sugarizer"
+ynh_setup_source --dest_dir="$install_dir/sugarizer-server" --source_id="sugarizer-server"
 
 #=================================================
 # APP INITIAL CONFIGURATION
@@ -41,7 +55,7 @@ yunohost service add "$app" --description="Documentation tool for creativity" --
 #=================================================
 ynh_script_progression "Installing the app..."
 
-pushd "$install_dir"
+pushd "$install_dir/sugarizer-server"
  	ynh_hide_warnings ynh_exec_as_app npm install --no-optional
  	grunt -v --force
  	cp -r build/* .
